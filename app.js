@@ -1,5 +1,5 @@
 //endpoint
-const url = "https://crudcrud.com/api/c9a464875c1445998dc45b82c1cf8495";
+const url = "https://crudcrud.com/api/9c6690a765694267adff96191d85c52c";
 
 console.log(axios);
 
@@ -56,8 +56,8 @@ function fetchData(){
 function displayInTable(info){
     const tableBody = document.getElementById("BookmarksList");
 
-
-    info.forEach((webDetails, index) => {
+    let index = 0;
+    info.forEach((webDetails) => {
         
         const row = document.createElement('tr');
             
@@ -109,6 +109,7 @@ function displayInTable(info){
 
             // Appended row to table body finally
             tableBody.appendChild(row);
+            index++;
         });   
 }
 
@@ -128,11 +129,11 @@ function deleteBooking(id){
 function editBooking(webDetails , row){
     
     const name = document.getElementById('title');
-    const url = document.getElementById('url');
+    const urlInput = document.getElementById('url');
 
     //pushing all the data from webDetails object in database inside the boxes of form
     name.value = webDetails.name;
-    url.value = webDetails.url;
+    urlInput.value = webDetails.url;
 
     //remove row from list
     row.remove();
@@ -141,7 +142,7 @@ function editBooking(webDetails , row){
     //object made which has updated data values
     const updatedData = {
         name : name.value,
-        url : url.value,
+        url : urlInput.value,
     }
     // console.log(updatedData);
    
@@ -149,6 +150,7 @@ function editBooking(webDetails , row){
     // using "DELETE Request" to removed the old user ID after filling all blanks
     axios.delete(`${url}/bookmarks/${webDetails._id}`)
         .then(() => {
+            // console.log(`${url}/bookmarks/${webDetails._id}`);
             // row removed from list
             row.remove();
 
