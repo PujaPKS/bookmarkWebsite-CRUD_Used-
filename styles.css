@@ -1,0 +1,12 @@
+#head{
+    text-align: center;
+    color: rgb(31, 31, 169);
+    font-weight: bold;
+    text-decoration:underline;
+}
+
+.itemBox{
+    background-color: #0f8bf8;
+    padding: 10px;
+    border-radius: 8px;
+}
