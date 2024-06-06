@@ -1,10 +1,10 @@
 //endpoint
-const url = "https://crudcrud.com/api/9c6690a765694267adff96191d85c52c";
+const url = "https://crudcrud.com/api/ab997ed413ea4b229e2825af98c84526";
 
 console.log(axios);
 
 
-function handleFormSubmition(event){
+async function handleFormSubmition(event){
     event.preventDefault();
 
 
@@ -22,34 +22,34 @@ function handleFormSubmition(event){
     //moving all the values from object to crud-crud endpoint
     
     //posting all items in database using "POST Request"
-    axios.post(`${url}/bookmarks` , webDetails)
-    .then((res) => { 
+    const res = await axios.post(`${url}/bookmarks` , webDetails)
+    try{ 
         console.log(res.data);
         window.location.reload(); //page reloader
 
         //after successful post of data in database now we need to fetch the data from database
         fetchData();
-    })
-    .catch((err) => { 
+    }
+    catch(err) { 
         console.log(err);
-    });
+    };
 }
 
 
-function fetchData(){
+async function fetchData(){
     
     //"GET Request" used to fetch data from endpoint database
-    axios.get(`${url}/bookmarks`)
-    .then((res) => {
+    const res = await axios.get(`${url}/bookmarks`)
+    try {
         const info = res.data;
         console.log(info);
 
         //displaying fetched data from database in table a function called where data is passed
         displayInTable(info);
-    })
-    .catch((err) => {
+    }
+    catch(err) {
         console.log(err);
-    })
+    };
 }
 
 //function made for displaying data fetched inside table
@@ -84,16 +84,16 @@ function displayInTable(info){
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'Delete';
             deleteButton.classList.add('btn', 'btn-danger');
-            deleteButton.onclick = () => {
-                deleteBooking(webDetails._id);
+            deleteButton.onclick = async() => {
+                await deleteBooking(webDetails._id);
             };
 
             //Edit button creation and function calling
             const editButton = document.createElement('button');
             editButton.textContent = "Edit";
             editButton.classList.add('btn' , 'btn-primary');
-            editButton.onclick = () => {
-                editBooking(webDetails , row);
+            editButton.onclick = async() => {
+                await editBooking(webDetails , row);
             };
 
             // Appending buttons to action cell
@@ -114,19 +114,19 @@ function displayInTable(info){
 }
 
 //Function for deleting booking
-function deleteBooking(id){
-    axios.delete(`${url}/bookmarks/${id}`)
-        .then((result) => {
+async function deleteBooking(id){
+    const result = await axios.delete(`${url}/bookmarks/${id}`);
+        try {
             console.log(result);
             window.location.reload(); //page reloader
-        })
-        .catch((err) => {
+        }
+        catch(err) {
             console.log(err);
-        })
+        };
 }
 
 //Function for editing booking details
-function editBooking(webDetails , row){
+async function editBooking(webDetails , row){
     
     const name = document.getElementById('title');
     const urlInput = document.getElementById('url');
@@ -148,25 +148,20 @@ function editBooking(webDetails , row){
    
 
     // using "DELETE Request" to removed the old user ID after filling all blanks
-    axios.delete(`${url}/bookmarks/${webDetails._id}`)
-        .then(() => {
+    await axios.delete(`${url}/bookmarks/${webDetails._id}`)
+        try {
             // console.log(`${url}/bookmarks/${webDetails._id}`);
             // row removed from list
             row.remove();
 
             // updating all items in database using "PUT Request"
-            axios.put(`${url}/bookmarks/${webDetails._id}`, updatedData)
-                .then((res) => {
-                    console.log(res.data);
-                    window.location.reload();//page reloader
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        })
-        .catch((err) => {
+            await axios.put(`${url}/bookmarks/${webDetails._id}`, updatedData)
+                console.log(res.data);
+                window.location.reload();//page reloader
+        }
+        catch(err) {
             console.log(err);
-        });
+        }
 }
 
 
